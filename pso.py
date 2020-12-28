@@ -7,21 +7,21 @@ import math as math
 # This class defines default values of the options within the options structure.
 class MyOptions(object):
     def __init__(self):
-        self.npart = 30;  # The number of particles.
-        self.niter = 100;  # The number of iterations.
-        self.cbi = 2.5;  # Initial value of the individual-best acceleration factor.
-        self.cbf = 0.5;  # Final value of the individual-best acceleration factor.
-        self.cgi = 0.5;  # Initial value of the global-best acceleration factor.
-        self.cgf = 2.5;  # Final value of the global-best acceleration factor.
-        self.wi = 0.9;  # Initial value of the inertia factor.
-        self.wf = 0.4;  # Final value of the inertia factor.
-        self.vmax = math.inf;  # Absolute speed limit. It is the primary speed limit.
-        self.vmaxscale = float('nan');  # Relative speed limit. Used only if absolute limit is unspecified.
-        self.vspaninit = 1;  # The initial velocity span. Initial velocities are initialized
-        self.initpopulation = float('nan');
-        self.initoffset = 0;  # Offset of the initial population.
-        self.initspan = 1;  # Span of the initial population.
-        self.trustoffset = 0;  # If set to 1 (true) and offset is vector, than the offset is
+        self.npart = 30  # The number of particles.
+        self.niter = 100  # The number of iterations.
+        self.cbi = 2.5  # Initial value of the individual-best acceleration factor.
+        self.cbf = 0.5  # Final value of the individual-best acceleration factor.
+        self.cgi = 0.5  # Initial value of the global-best acceleration factor.
+        self.cgf = 2.5  # Final value of the global-best acceleration factor.
+        self.wi = 0.9  # Initial value of the inertia factor.
+        self.wf = 0.4  # Final value of the inertia factor.
+        self.vmax = math.inf  # Absolute speed limit. It is the primary speed limit.
+        self.vmaxscale = float('nan')  # Relative speed limit. Used only if absolute limit is unspecified.
+        self.vspaninit = 1  # The initial velocity span. Initial velocities are initialized
+        self.initpopulation = float('nan')
+        self.initoffset = 0  # Offset of the initial population.
+        self.initspan = 1  # Span of the initial population.
+        self.trustoffset = 0  # If set to 1 (true) and offset is vector, than the offset is
         # believed to be a good solution candidate, so it is included in
         # the initial swarm.
 
@@ -61,9 +61,9 @@ class Particle(object):
     def update_velocity(self, pos_best_g, maxiter, iter, opt):
 
         # Calculating PSO parameters
-        w = self.linrate(opt.wf, opt.wi, maxiter, 0, iter);
-        cp = self.linrate(opt.cbf, opt.cbi, maxiter, 0, iter);
-        cg = self.linrate(opt.cgf, opt.cgi, maxiter, 0, iter);
+        w = self.linrate(opt.wf, opt.wi, maxiter, 0, iter)
+        cp = self.linrate(opt.cbf, opt.cbi, maxiter, 0, iter)
+        cg = self.linrate(opt.cgf, opt.cgi, maxiter, 0, iter)
 
         for i in range(0, self.num_dimensions):
             r1 = random.random()
@@ -98,19 +98,19 @@ class PSO(object):
         population = []
         if (~np.isnan(options.initpopulation)).all():
             b = np.shape(options.initpopulation)
-            if (np.size(b) == 1):
+            if np.size(b) == 1:
                 pno = b[0]
                 pdim = 1
             if (pno != options.npart) or (pdim != options.nvar):
                 raise Error("The format of initial population is inconsistent with desired population")
-            population = options.initpopulation;
+            population = options.initpopulation
         else:
             for i in range(0, num_particles):
                 x0 = (np.random.rand(num_dimensions, 1) - 0.5) * 2 * options.initspan + options.initoffset
                 population.append(Particle(x0, num_dimensions, options))
 
         #################################
-        ###The main loop  ###############
+        # The main loop  ###############
         #################################
         # Begin optimization loop
         i = 0
