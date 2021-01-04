@@ -1,4 +1,4 @@
-# "Black-box" optimizacija sa PSO algoritmom
+"Black-box" optimizacija sa PSO algoritmom
 ---
 ## Projektni zadatak iz Nelinearnog Programiranja i Evolutivnih Algoritama
 

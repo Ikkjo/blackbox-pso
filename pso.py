@@ -46,8 +46,8 @@ class Particle(object):
             self.position_i.append(x0[i][0])
 
     # calculate current fitness and calculating new individually best values
-    def evaluate(self, costFunc):
-        self.fitness_i = costFunc(self.position_i)
+    def evaluate(self, cost_func):
+        self.fitness_i = cost_func(self.position_i)
         # upadete individual best -> check to see if the current position is better than an individual best
         if self.fitness_i < self.fitness_best_i or self.fitness_best_i == -1:
             self.pos_best_i = self.position_i
@@ -88,7 +88,7 @@ class Particle(object):
 
 
 class PSO(object):
-    def __init__(self, costFunc, num_dimensions, options):
+    def __init__(self, cost_func, num_dimensions, options):
 
         fitness_best_g = -1  # best fitness in population
         pos_best_g = []  # best position in population
@@ -118,7 +118,7 @@ class PSO(object):
             # print i,err_best_g
             # cycle through particles in swarm and evaluate fitness
             for j in range(0, num_particles):
-                population[j].evaluate(costFunc)
+                population[j].evaluate(cost_func)
 
                 # Calculating new globally best values (globally)
                 if population[j].fitness_i < fitness_best_g or fitness_best_g == -1:
