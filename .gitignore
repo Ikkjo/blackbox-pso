@@ -1,0 +1,6 @@
+
+*.xml
+.idea/npea-project.iml
+__pycache__/ann_criterion.cpython-39.pyc
+__pycache__/pso.cpython-39.pyc
+NPiEA - Projektni zadatak 12/NPiEA - Projektni Zadatak 12.pdf
