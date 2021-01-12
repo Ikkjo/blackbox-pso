@@ -29,7 +29,7 @@ class Particle(object):
         for i in range(0, self.dimension):
             self.position[i] = self.position[i] + self.speed[i]
 
-    def new_velocity(self, global_best, it, max_iter, option):
+    def update_speed(self, global_best, it, max_iter, option):
         cp = scale_factor(option.cp_final, option.cp_init, max_iter, it)
         w = scale_factor(option.w_final, option.w_init, max_iter, it)
         cg = scale_factor(option.cg_final, option.cg_init, max_iter, it)

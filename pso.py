@@ -18,5 +18,5 @@ class PSO(object):
                     self.best_position = population[j].position
                     self.best_value = population[j].value
             for j in range(particle_num):
-                population[j].new_velocity(self.best_position, i, max_iter, option)
+                population[j].update_speed(self.best_position, i, max_iter, option)
                 population[j].change_position()
