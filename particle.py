@@ -16,7 +16,10 @@ class Particle(object):
         self.dimension = dimension
 
         for i in range(0, dimension):
-            self.speed.append((random.random() - 0.5) * 2)
+            if i % 2 == 0:
+                self.speed.append(-1 * random.random())
+            else:
+                self.speed.append(random.random())
             self.position.append(x0[i][0])
 
     def enumerate(self, func):
@@ -29,7 +32,7 @@ class Particle(object):
         for i in range(0, self.dimension):
             self.position[i] = self.position[i] + self.speed[i]
 
-    def update_speed(self, global_best, it, max_iter, option):
+    def new_speed(self, global_best, it, max_iter, option):
         cp = scale_factor(option.cp_final, option.cp_init, max_iter, it)
         w = scale_factor(option.w_final, option.w_init, max_iter, it)
         cg = scale_factor(option.cg_final, option.cg_init, max_iter, it)

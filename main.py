@@ -6,13 +6,11 @@ from pso import PSO
 
 if __name__ == '__main__':
     opt = Options()
-    for i in range(1):
+    for i in range(10):
         print("Test number " + str(i + 1))
-        t = time.time()
-        pso = PSO(crit.optimality_criterion, 100, 300, 60, opt)
-        print(time.time() - t)
-        print("\n\n")
+        pso = PSO(crit.optimality_criterion, 30, 100, 60, opt)
         print('Optimal point:')
         print(pso.best_position)
         print('Optimal value:')
         print(pso.best_value)
+        print("\n\n")
