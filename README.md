@@ -12,4 +12,4 @@ U izradi projekta su učestvovali studenti:
 
 ## Pokretanje
 
-python main.py
+```python main.py```
