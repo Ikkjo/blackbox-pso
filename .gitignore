@@ -1,0 +1,9 @@
+
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/npea-project.iml
+.idea/vcs.xml
+.idea/workspace.xml
+__pycache__/ann_criterion.cpython-39.pyc
+__pycache__/pso.cpython-39.pyc

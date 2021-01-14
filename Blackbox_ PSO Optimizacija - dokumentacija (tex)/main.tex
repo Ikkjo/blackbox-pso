@@ -1,0 +1,178 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{authblk}
+\usepackage{ragged2e}
+\usepackage{graphicx}
+\usepackage[margin=1in, includefoot]{geometry}
+\usepackage{amsmath}
+\usepackage{setspace}
+\usepackage{longtable}
+\usepackage{indentfirst}
+
+\onehalfspacing
+
+\newcommand{\vecw}{\underline{\textit{w}}}
+\newcommand{\fw}{\textit{f}(\vecw)}
+
+\DeclareRobustCommand{\ftnlogo}{%
+  \begingroup\normalfont
+  \includegraphics[height=4\fontcharht\font`\B]{FTN_LogoResized.png}%
+  \endgroup
+}
+
+\DeclareRobustCommand{\unslogo}{%
+  \begingroup\normalfont
+  \includegraphics[height=4\fontcharht\font`\B]{UNS_LogoResized.png}%
+  \endgroup
+}
+
+\begin{document}
+    \begin{titlepage}
+        \begin{center}
+        \huge{\textbf{\ftnlogo Univerzitet u Novom Sadu \unslogo\\ [12pt]  Fakultet tehničkih nauka}}\\
+        \vspace{55mm}
+        \LARGE{\textbf{Dokumentacija za projektni zadatak}}\\
+        \vspace{35mm}
+        Januar 2021.
+        \vspace{35mm}
+        \end{center}
+        \begin{flushright}
+            Studenti:\hfill Ilija Kalinić, SW65/2019\\
+                            Zoran Bukorac, SW40/2019\\
+                            Matija Zarić, SW24/2019\\
+            \vspace{3pt}
+            Predmet:\hfill Nelinearno Programiranje i Evolutivni Algoritmi\\
+            \vspace{3pt}
+            Broj projektnog zadatka:\hfill br. 12\\
+            \vspace{3pt}
+            Tema projektnog zadatka:\hfill PSO algoritam, "black-box"optimizacija\\
+        \end{flushright}
+        
+    
+    \end{titlepage}
+
+    \section{Opis problema}
+    Zadata je funkcija \fw\space koja je definisana preko veštačke neuronske mreže, pa je možemo smatrati nepoznatom.
+    Poznato je da je \vecw\space vektor dimenzije 60, dakle:
+    \begin{equation}
+    \vecw = ( w_1, w_2, w_3, \ldots, w_{58}, w_{59}, w_{60} ),
+    \end{equation}
+    i da je vrednost kriterijuma realan, jednodimenzionalan broj.
+    
+    Funkcija \fw\space je nepoznata u analitičkom smislu (ne postoji matematička formula koja
+    opisuje tu funkciju), ali možemo evaluirati njenu vrednost za proizvoljnu vrednost argumenata
+    \vecw.
+    U priloženoj datoteci \textit{ann\_criterion.py}\space se nalazi kod za veštačku neuronsku
+    mrežu odnosno kod za izračunavanje vrednosti našeg kriterijuma optimalsnosti. \\
+
+    Potrebno je optimizovati ulazne vrednosti koristeći PSO (Particle Swarm Optimization) algoritam
+    kako bismo minimizovali vrednost zadate nepoznate funkcije, tj. kriterijuma optimalnosti \fw. 
+    
+
+    
+    \begin{figure}[h]
+        \centering
+        \includegraphics[scale=0.36]{Blackbox3D-withGraphs.png}
+        \caption{Skica "Black-boxa"\footnotemark}
+        \label{fig:Black_box}
+    \end{figure}
+    
+        \footnotetext{Autor: Krauss - Own work, CC BY-SA 4.0,
+        https://commons.wikimedia.org/w/index.php?curid=45608217}
+    
+    \section{Uvod}
+    
+    \subsection{Kratak opis Particle Swarm Optimization algoritma}
+    Particle Swarm Optimization algoritam je genetički algoritam koji donekle simulira socijalna ponašanja životinja (najviše ptica) u velikim grupama. 
+    Glavni cilj algoritma PSO je da optimizuje zadat prostor pretrage koristeći "roj" čestica u tom prostoru. 
+    Roj čestica se može još i nazvati populacijom. Svaku česticu karakteriše njen položaj u prostoru, koji je ujedno i jedno potencialno rešenje problema. 
+    Inicijalne pozicije svih čestica u prostoru se određuju nasumično. 
+    Čestice određuju poziciju u sledećoj iteraciji na osnovu trenutne vrednosti kriterijuma optimalnosti (inercioni faktor), sopstvene najoptimalnije vrednosti (kognitivni faktor), najoptimalnije vrednosti u celoj populaciji (socijalni faktor).
+    Uticaj sopstvene najoptimalnije vrednosti treba da bude veći u početnim iteracijama (čestica sama traži optimum na osnovu svojih "najboljih iskustava"), a kako teče optimizacija da slabi, a uticaj najoptimalnije vrednosti u celoj populaciji treba da bude obrnut, manji u početku a veći na kraju optimizacije (čestica se posle pridružuje ostatku populacije u pronalaženju optimuma). \\
+    \begin{figure}[h]
+        \centering
+        \includegraphics[scale=0.5]{PSO - skica kretanja.png}
+        \caption{Skica kretanja čestice u postupku optimizacije}
+        \label{fig:Walking sketch}
+    \end{figure}
+    
+    %\subsection{}
+    
+    \section{Implementacija}
+    Uzor za implementaciju PSO algoritma je bilo predavanje profesora Rapaić na kursu\\
+    Nelinearno Programiranje i Evolutivni Algoritmi.\\
+    
+    Implementacija je odrađena u programskom jeziku \textit{\textbf{Python}}, uz dve ugrađene     biblioteke \textit{math}, \textit{random}, \textit{time}\space i dodatnom bibliotekom za numeričke
+    operacije \textit{numpy}.
+    
+    U implementaciji se koriste 3 datoteke koji sadrže potrebne klase i    kod za algoritam (\textit{options.py}, \textit{particle.py} i \textit{pso.py}) , priložena
+    datoteka koja sadrži kriterijum optimalnosti (\textit{ann\_criterion.py} i skripta za    pokretanje programa (\textit{main.py}).   \\
+    
+    \newpage
+    
+    \subsection{Implementacija pomoćnih struktura}
+    
+    \noindent Implementirane su klase:
+        \begin{itemize}
+            \item \textbf{MyOptions} - sadrži atribute za sve opcije i parametre koji su potrebni za izvršavanje optimizacionog algoritma.
+            \item \textbf{Particle} - sadrži atribute u kojima se čuvaju vrednosti tačaka u u svim iteracijama, brzine čestice u svim iteracijama, tačka u kojoj je čestica bila najoptimalnija, kao i vrednost kriterijuma optimalnosti u toj tački i broj dimenzija prostora.\\
+            Dodatno postoje i funkcije za evaluiraje trenutne tacke u kojoj se nalazi čestica, i pomoćne funkcije koje ažuriraju ostale atribute.
+            \item \textbf{PSO} - sadrži glavnu petlju za izvršavanje optimizacionog algoritma, a u atributima čuva vrednosti najbolje tačke i vrednosti kriterijuma optimalnosti u toj tački, populaciju (skup svih čestica) u  listi.
+        \end{itemize}
+    
+    \subsection{Glavni deo programa}
+        Glavni fajl koji povezuje sve strukture i funkcije je skripta \textit{main.py}. U njoj se inicijalizuje objekat \textit{Options}\space koji sadrži potrebne parametre za socijalni, kognitivni i inercioni faktor, zatim korisnik određuje broj iteracija i broj populacije (upisom tih vrednosti u sam fajl), pa se skripta može pokrenuti.
+        
+        Na kraju izvršenja optimizacije se na konzoli ispiše optimalna tačka i njena vrednost, kao i okvirno vreme za koliko se izvršila optimizacija upotrebom modula \textit{time}.
+        
+    \subsection{Klasa \textit{Options}}
+    Veoma je značajna klasa \textit{Options} iz razloga što se u njoj nalaze početne i
+    kranje vrednosti inercionog, kognitivnog i socijalnog faktora kretanja svake čestice.
+    Profesor Rapaić je na svom predavanju o PSO algoritmu objasnio da se od nastanka algoritma eksperimentalnim putem doslo do optimalnih podesavanja za pocetne i krajnje vrednosti ovih parametra.
+    
+
+    
+    \section{Zaključak}
+    Puštanjem skripte da izvrši optimizaciju nekoliko puta, svaki put uz podešavanje broja iteracija i brojnosti populacije smo došli do najoptimalnijeg zabeleženog rešenja:\\
+
+    \newpage
+    \begin{center}
+       \vecw\space \textbf{=}\space (-1.705, -1.594, -8.866, -1.112, -0.347, -1.810,\\
+        -0.996, -1.206, 0.432, -1.427, 0.015, 0.856,\\
+        2.411, -0.674, 0.318, 1.397, -0.698, 0.965,\\
+        0, 7.238, -1.523, 0.028, -0.660, 0.996,\\
+        1.197, -0.887, 0.036, -1.417, -0.735, 1.044,\\
+        -1.075, 1.648, 2.054, -0.028, -0.207, -4.721,\\
+        -6.096, -1.138, 0.329, -3.026, -0.700, 1.835,\\
+        2.744, 0.012, 0.360, -0.873, -0.946, 0.437,\\
+        -2.413, -1.176, -0.404, 0.510, -1.886, 3.665,\\
+        -0.772, -1.806, 1.316, -0.803, -1.501, 1.126)\\
+        \fw \textbf{=}\space 0.011\\ 
+        Gde je \textbf{broj iteracija} bio \textbf{500},\\
+        a \textbf{brojnost populacije 300}\\
+    \end{center}
+    
+    Uspešni rezultati optimizacije se nalaze u priloženim datotekama \textit{optimization\_first\_run.txt}, \textit{optimization\_second\_run.txt}, 
+    \textit{optimization\_third\_run.txt}, \textit{optimization\_fourth\_run.txt}\space i 
+    \textit{optimization\_first\_run.txt}.
+    
+    Kod najvećeg broja rezultata optimizacije, dobili smo slične optimume sa razlikama
+    u redu $10^{-3}$.
+    
+    Pored preciznosti optimizacije, dodatan problem pravi i vreme za koje će se izvršiti
+    optimizacija. Na ovo utiče \underline{broj iteracija} i \underline{brojnost populacije}. Ustanovljeno je da u slučaju optimizacije zadatog kriterijuma
+    optimalnosti, mnogo više utiče \textbf{brojnost populacije} nego broj iteracija u brzini
+    izvršavanja optimizacije, pretpostavljamo zbog toga što je dimenzionalnost kriterijuma
+    optimalnosti 60.\\
+    
+    
+    \vspace{20mm}
+    
+    \begin{figure}[h]
+        \centering
+        \includegraphics[scale=0.45]{Options_class.png}
+        \caption{Isečak koda iz fajla options.py\\cp - kognitivni faktor, cg - socijalni faktor, w - inercioni faktor}
+        \label{fig:code_snippet}
+    \end{figure}
+\end{document}
